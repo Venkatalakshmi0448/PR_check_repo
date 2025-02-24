@@ -1,0 +1,22 @@
+name: Auto Create Pull Request from Feature Branch to Main
+on:
+  push:
+    branches:
+      - feature_branch
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Create Pull Request to Main
+      uses: peter-evans/create-pull-request@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for authentication
+        title: 'Automated PR: Feature Branch to Main'
+        body: 'This PR is automatically created from the feature branch to the main branch.'
+        base: main  # Target branch
+        head: feature_branch  # Source branch
+        draft: false  # Make the PR ready for review
