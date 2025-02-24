@@ -3,9 +3,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-     branches:
-       - main
   workflow_call:
     inputs:
       dockerfile:
@@ -59,5 +56,5 @@ jobs:
         context: .
         file: ${{ inputs.dockerfile }} 
         push: true
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
+        tags: ${{ env.tags }}
+        labels: ${{ env.labels }}
