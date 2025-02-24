@@ -17,9 +17,12 @@ jobs:
         sudo apt update
         sudo apt install gh
 
+    - name: Authenticate with GitHub CLI
+      run: |
+        gh auth login --token ${{ secrets.GITHUB_TOKEN }}  # Correct way to authenticate with the GitHub token
+
     - name: Create Pull Request
       run: |
-        gh auth login --with-token ${{ secrets.GITHUB_TOKEN }}  # Ensure the GitHub CLI is authenticated
         gh pr create --base main --head feature_branch --title "Feature PR" --body "This PR implements a new feature."
 
     - name: Assign Reviewer(s) to the PR
