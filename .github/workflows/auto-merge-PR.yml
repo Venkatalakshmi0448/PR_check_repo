@@ -22,9 +22,13 @@ jobs:
     - name: Authenticate with GitHub CLI
       run: |
         gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+        
+    - name: Get PR number
+      id: get_pr_number
+      run: |
+        PR_NUMBER=$(gh pr list --state open --head feature_branch --json number -q '.[0].number')
+        echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV  # Export the PR number as an environment variable
 
     - name: Merge Pull Request
-      uses: devops-infra/action-pull-request-merge@v0.2.2
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        pull_request_number: ${{ github.event.pull_request.number }}  # PR number
+      run: |
+        gh pr merge ${{ env.PR_NUMBER }} --merge --delete-branch
