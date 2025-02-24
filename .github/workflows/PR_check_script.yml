@@ -47,17 +47,11 @@ jobs:
       with: 
          images: venkatalakshmi0448/nodejs-docker
 
-    - name: Set Docker tags and labels
-      id: meta-set
-      run: |
-            echo "tags=my-image-tag" >> $GITHUB_ENV
-            echo "labels=my-image-label" >> $GITHUB_ENV
-
     - name: Build and push Docker image
       uses: docker/build-push-action@v3
       with:
         context: .
         file: ${{ inputs.dockerfile }} 
         push: true
-        tags: ${{ env.tags }}
-        labels: ${{ env.labels }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
