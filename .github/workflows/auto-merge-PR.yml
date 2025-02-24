@@ -3,9 +3,7 @@ on:
   pull_request:
     types:
       - review_requested
-      - review_request_removed
-      - submitted  # Triggered when a review is submitted (i.e., approved)
-      - closed    # Triggered when the PR is closed (merged or manually closed)
+      - approved
 jobs:
   merge-pr:
     if: github.event.pull_request.state == 'open' && github.event.pull_request.mergeable_state == 'clean'  # Ensure the PR is open and mergeable
@@ -14,6 +12,16 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+
+    - name: Set up GitHub CLI
+      run: |
+        curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /usr/share/keyrings/github.asc
+        sudo apt update
+        sudo apt install gh
+
+    - name: Authenticate with GitHub CLI
+      run: |
+        gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
 
     - name: Merge Pull Request
       uses: devops-infra/action-pull-request-merge@v0.2.2
