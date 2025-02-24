@@ -1,0 +1,63 @@
+name: Build and Push Docker Image
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+     branches:
+       - main
+  workflow_call:
+    inputs:
+      dockerfile:
+        description: 'Path to the Dockerfile'
+        required: true
+        type: string
+        default: './Dockerfile'
+      dockerhub_repo:
+        description: 'Dockerhub repo name'
+        required: true
+        type: string
+        default: 'venkatalakshmi0448/nodejs-docker'
+      deploy_env:
+        description: 'Deployment environment'
+        required: true
+        type: string
+        default: 'staging'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the repository
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Log in to DockerHub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+    - name: Extract metadata (tags, labels) for docker
+      id: meta
+      uses: docker/metadata-action@v3
+      with: 
+         images: venkatalakshmi0448/nodejs-docker
+
+    - name: Set Docker tags and labels
+       id: meta
+       run: |
+              echo "::set-output name=tags::my-image-tag"
+              echo "::set-output name=labels::my-image-label"
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        file: ${{ inputs.dockerfile }} 
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
