@@ -12,20 +12,17 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Set up GitHub CLI
-      uses: cli/cli-action@v2
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /usr/share/keyrings/github.asc
+        sudo apt update
+        sudo apt install gh
 
     - name: Create Pull Request
-      id: create-pr
       run: |
-        gh pr create --title "Auto-created PR" \
-                     --body "This PR is automatically created." \
-                     --base main \
-                     --head feature_branch \
-                     --label "automated"
-      
-    - name: Add reviewer to PR
+        gh auth login --with-token < ${{ secrets.GITHUB_TOKEN }}  # Ensure the GitHub CLI is authenticated
+        gh pr create --base main --head feature_branch --title "Feature PR" --body "This PR implements a new feature."
+
+    - name: Assign Reviewer(s) to the PR
       run: |
-        PR_NUMBER=$(gh pr list --state open --head feature_branch --json number -q '.[0].number')
+        PR_NUMBER=$(gh pr list --state open --head feature_branch --json number -q '.[0].number')  # Get the PR number for the feature branch
         gh pr review $PR_NUMBER --request-reviewer venkatalakshmi1430
