@@ -20,3 +20,10 @@ jobs:
         base: main  # Target branch
         head: feature_branch  # Source branch
         draft: false  # Make the PR ready for review
+
+    - name: Add reviewer to PR
+      uses: octokit/request-action@v2
+      with:
+        route: POST /repos/${{ github.repository }}/pulls/${{ steps.create-pr.outputs.number }}/requested_reviewers
+        reviewers: '["venkatalakshmi1430"]' 
+        token: ${{ secrets.GITHUB_TOKEN }}
