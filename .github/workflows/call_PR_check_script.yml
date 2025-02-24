@@ -1,0 +1,12 @@
+name: Call docker image build and push reusable workflow
+on:
+  push:
+    branches:
+      - feature_branch
+jobs:
+  call-docker-build-push:
+    uses: ./.github/workflows/PR_check_script.yml
+    with:
+      dockerfile: './Dockerfile'  # Optional: specify the Dockerfile path if different
+      dockerhub_repo: 'venkatalakshmi0448/nodejs-docker'
+      deploy_env: 'production'
