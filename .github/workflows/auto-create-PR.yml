@@ -19,7 +19,7 @@ jobs:
 
     - name: Authenticate with GitHub CLI
       run: |
-        gh auth login --token ${{ secrets.GITHUB_TOKEN }}  # Correct way to authenticate with the GitHub token
+        gh auth login --token <<< "${{ secrets.GITHUB_TOKEN }}"  # Correct way to authenticate with the GitHub token
 
     - name: Create Pull Request
       run: |
