@@ -50,8 +50,8 @@ jobs:
     - name: Set Docker tags and labels
       id: meta
       run: |
-              echo "::set-output name=tags::my-image-tag"
-              echo "::set-output name=labels::my-image-label"
+            echo "tags=my-image-tag" >> $GITHUB_ENV
+            echo "labels=my-image-label" >> $GITHUB_ENV
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v3
