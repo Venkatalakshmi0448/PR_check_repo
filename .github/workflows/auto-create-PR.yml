@@ -28,4 +28,4 @@ jobs:
     - name: Assign Reviewer(s) to the PR
       run: |
         PR_NUMBER=$(gh pr list --state open --head feature_branch --json number -q '.[0].number')  # Get the PR number for the feature branch
-        gh pr review $PR_NUMBER --request-reviewer venkatalakshmi1430
+        gh pr request-reviewers $PR_NUMBER --reviewer venkatalakshmi1430
