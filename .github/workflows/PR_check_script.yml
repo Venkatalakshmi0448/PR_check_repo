@@ -2,7 +2,10 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - main
+      - feature_branch
+  pull_request:
+     branches:
+        - feature_branch
   workflow_call:
     inputs:
       dockerfile:
