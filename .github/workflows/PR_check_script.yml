@@ -3,9 +3,6 @@ on:
   push:
     branches:
       - feature_branch
-  pull_request:
-     branches:
-        - feature_branch
   workflow_call:
     inputs:
       dockerfile:
