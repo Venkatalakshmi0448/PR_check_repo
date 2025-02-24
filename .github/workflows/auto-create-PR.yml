@@ -11,19 +11,21 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Create Pull Request to Main
-      uses: peter-evans/create-pull-request@v4
+    - name: Set up GitHub CLI
+      uses: cli/cli-action@v2
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for authentication
-        title: 'Automated PR: Feature Branch to Main'
-        body: 'This PR is automatically created from the feature branch to the main branch.'
-        base: main  # Target branch
-        head: feature_branch  # Source branch
-        draft: false  # Make the PR ready for review
+        github_token: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Create Pull Request
+      id: create-pr
+      run: |
+        gh pr create --title "Auto-created PR" \
+                     --body "This PR is automatically created." \
+                     --base main \
+                     --head feature_branch \
+                     --label "automated"
+      
     - name: Add reviewer to PR
-      uses: octokit/request-action@v2
-      with:
-        route: POST /repos/${{ github.repository }}/pulls/${{ steps.create-pr.outputs.number }}/requested_reviewers
-        reviewers: '["venkatalakshmi1430"]' 
-        token: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        PR_NUMBER=$(gh pr list --state open --head feature_branch --json number -q '.[0].number')
+        gh pr review $PR_NUMBER --request-reviewer venkatalakshmi1430
