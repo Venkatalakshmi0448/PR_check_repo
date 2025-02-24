@@ -10,3 +10,7 @@ jobs:
       dockerfile: './Dockerfile'  # Optional: specify the Dockerfile path if different
       dockerhub_repo: 'venkatalakshmi0448/nodejs-docker'
       deploy_env: 'production'
+
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
