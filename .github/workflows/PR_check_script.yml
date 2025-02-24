@@ -39,7 +39,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
     - name: Extract metadata (tags, labels) for docker
-      id: meta-extract
+      id: meta
       uses: docker/metadata-action@v3
       with: 
          images: venkatalakshmi0448/nodejs-docker
