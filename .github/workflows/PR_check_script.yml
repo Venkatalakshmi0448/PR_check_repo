@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - feature_branch
+  pull_request:
+    types:
+      - closed  # Trigger the workflow when the PR is closed (merged or manually closed)
   workflow_call:
     inputs:
       dockerfile:
