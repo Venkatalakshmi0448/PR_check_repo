@@ -42,13 +42,13 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
     - name: Extract metadata (tags, labels) for docker
-      id: meta
+      id: meta-extract
       uses: docker/metadata-action@v3
       with: 
          images: venkatalakshmi0448/nodejs-docker
 
     - name: Set Docker tags and labels
-      id: meta
+      id: meta-set
       run: |
             echo "tags=my-image-tag" >> $GITHUB_ENV
             echo "labels=my-image-label" >> $GITHUB_ENV
