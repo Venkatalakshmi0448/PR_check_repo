@@ -48,8 +48,8 @@ jobs:
          images: venkatalakshmi0448/nodejs-docker
 
     - name: Set Docker tags and labels
-       id: meta
-       run: |
+      id: meta
+      run: |
               echo "::set-output name=tags::my-image-tag"
               echo "::set-output name=labels::my-image-label"
 
