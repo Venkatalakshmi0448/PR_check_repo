@@ -27,6 +27,7 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true || github.event_name == 'push'  # Ensure the job runs for both PR merged and push event
 
     steps:
     - name: Check out the repository
@@ -52,3 +53,11 @@ jobs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
+
+  if_merged:
+      if: github.event.pull_request.merged == true
+      runs-on: ubuntu-latest
+      needs: build-and-push  # Ensures this step runs only after the build-and-push job
+      steps:
+       - run: |
+              echo "The PR was merged. Proceeding with further steps."
